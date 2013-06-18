@@ -9,5 +9,21 @@
 #import <UIKit/UIKit.h>
 
 @interface ViewController : UIViewController
-
+{
+    BOOL running;
+    NSTimeInterval startTime;
+    NSTimeInterval endTime;
+    double trialTime;
+    double trialBandwidth;
+    int trial;
+}
+@property (weak, nonatomic) IBOutlet UILabel *network;
+@property (weak, nonatomic) IBOutlet UILabel *testNotice;
+@property (weak, nonatomic) IBOutlet UILabel *trial1;
+@property (weak, nonatomic) IBOutlet UILabel *trial2;
+@property (weak, nonatomic) IBOutlet UILabel *trial3;
+@property (weak, nonatomic) IBOutlet UILabel *avg;
+@property (weak, nonatomic) IBOutlet UILabel *loc;
+@property (strong, nonatomic) PFObject *trialObj;
+- (IBAction)btnPressed:(id)sender;
 @end
