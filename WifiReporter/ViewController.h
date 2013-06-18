@@ -16,6 +16,10 @@
     double trialTime;
     double trialBandwidth;
     int trial;
+    double trial1;
+    double trial2;
+    double trial3;
+    double average;
 }
 @property (weak, nonatomic) IBOutlet UILabel *network;
 @property (weak, nonatomic) IBOutlet UILabel *testNotice;

@@ -26,15 +26,19 @@
 @interface ViewController ()
 @property(nonatomic, strong) NSString *currTestName;
 @property(nonatomic, strong) UIButton *currTest;
+@property(nonatomic, weak) NSString * macAddress;
 @property(nonatomic) double bandwidthTotal; // stores the value of the bandwidth
 @property(nonatomic) double totalTime;
 @property(nonatomic) double lat;
 @property(nonatomic) double longitude;
-@property(nonatomic, weak) NSString * macAddress;
 @property(nonatomic) BOOL locFlag;
 @end
 
 @implementation ViewController
+
+@synthesize trial1 = _trial1;
+@synthesize trial2 = _trial2;
+@synthesize trial3 = _trial3;
 
 - (void)viewDidLoad
 {
@@ -50,10 +54,10 @@
         
        // display alert if user is not connected to wifi
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No network connection"
-                                                        message:@"You must be connected to a wi-fi network to use this app."
-                                                       delegate:nil
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
+            message:@"You must be connected to a wi-fi network to use this app."
+            delegate:nil
+            cancelButtonTitle:@"OK"
+            otherButtonTitles:nil];
         [alert show];
     } else {
         NSLog(@"Connected to wi-fi!");
@@ -63,6 +67,7 @@
     running = false;
     
     // query current location
+    
     dispatch_queue_t findLoc = dispatch_queue_create("querying location", DISPATCH_QUEUE_CONCURRENT);
     dispatch_async(findLoc, ^{
         [PFGeoPoint geoPointForCurrentLocationInBackground:^(PFGeoPoint *geoPoint, NSError *error) {
@@ -71,6 +76,9 @@
                 NSLog(@"In fact, you're at %.3f, %.3f", geoPoint.latitude, geoPoint.longitude);
                 self.lat = geoPoint.latitude;
                 self.longitude = geoPoint.longitude;
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    NSLog(@"%f, %f", self.longitude, self.lat);
+                });
                 self.locFlag = YES;
             } else {
                 [self.loc setText:@"Location: Error obtaining location"];
@@ -78,14 +86,14 @@
             }
         }];
     });
+
     
-    
-    // get MAC address
+    // get and setMAC address
     char* macAddressString= (char*)malloc(18);
     NSString* macAddress= [[NSString alloc] initWithCString:getMacAddress(macAddressString, "en0")
-                                                   encoding:NSMacOSRomanStringEncoding];
+        encoding:NSMacOSRomanStringEncoding];
     self.macAddress = macAddress;
-    free(macAddressString);
+//    free(macAddressString);
     NSLog(@"The MAC address is: %@", self.macAddress);
     
 }
@@ -108,11 +116,7 @@
         
         [sender setHighlighted:NO];
         sender.userInteractionEnabled = NO;
-        if(self.locFlag == YES)
-        {
-            [self.loc setText:[NSString stringWithFormat:@"Location: %.3f, %.3f", self.lat, self.longitude]];
-        }
-        
+            
         // run the test three times
         for (i = 0; i < 3; i++)
         {
@@ -130,31 +134,37 @@
         running = false;
     }
     [[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.5]];
-    [self.avg setText:[NSString stringWithFormat:@"%.3f Mbps", self.bandwidthTotal / 3.0]];
 
+    average = self.bandwidthTotal / 3.0;
     // add info to Parse
     // call these commands in a concurrent thread to avoid disrupting the main (UI) thread
     dispatch_queue_t addToParse = dispatch_queue_create("adding to Parse", NULL);
     dispatch_sync(addToParse, ^{
+        NSLog(@"latitude: %f", self.lat );
+        NSLog(@"longitude: %f", self.longitude);
+        NSLog(@"MAC: %@", self.macAddress);
+        
+    
         PFObject *trialObj = [PFObject objectWithClassName:@"wifiTest"];
         [trialObj setObject:self.currTestName forKey:@"test"];
-        [trialObj setObject:self.trial1.text forKey:@"trial1"];
-        [trialObj setObject:self.trial2.text forKey:@"trial2"];
-        [trialObj setObject:self.trial3.text forKey:@"trial3"];
-        [trialObj setObject:self.avg.text forKey:@"average"];
+        [trialObj setObject:[NSString stringWithFormat:@"%.3f  Mbps",trial1] forKey:@"trial1"];
+        [trialObj setObject:[NSString stringWithFormat:@"%.3f  Mbps",trial2] forKey:@"trial2"];
+        [trialObj setObject:[NSString stringWithFormat:@"%.3f  Mbps",trial3] forKey:@"trial3"];
+        [trialObj setObject:[NSString stringWithFormat:@"%.3f  Mbps",average] forKey:@"average"];
         [trialObj setObject:[NSString stringWithFormat:@"%f",self.lat]        forKey:@"latitude"];
         [trialObj setObject:[NSString stringWithFormat:@"%f",self.longitude]  forKey:@"longitude"];
         [trialObj setObject:[NSString stringWithFormat:@"%@",self.macAddress] forKey:@"MAC"];
         [trialObj save];
         self.trialObj = trialObj;
     });
-
     
     NSLog(@"the trailObj is %@", self.trialObj);
     NSLog(@"the object ID is poop: %@", self.trialObj.objectId);
    
 
     [self.testNotice setText:@"Tests Completed"];
+    sender.enabled = YES;
+    [sender setTitle:@"Run Test Again" forState: UIControlStateNormal];
     NSLog(@"/////////////Alllllllll Dooonnneeeee///////////");
     [self performSegueWithIdentifier:@"testResults" sender:self];
 }
@@ -194,20 +204,19 @@
     } else {
         trialBandwidth = 8.0 * (772.0 / trialTime);
     }
-    self.bandwidthTotal += trialBandwidth;
-    
     switch(trial)
     {
         case 1:
-            [self.trial1 setText:[NSString stringWithFormat:@"%.3f Mbps",trialBandwidth]];
+            trial1 = trialBandwidth;
             break;
         case 2:
-            [self.trial2 setText:[NSString stringWithFormat:@"%.3f Mbps",trialBandwidth]];
+            trial2 = trialBandwidth;
             break;
         case 3:
-            [self.trial3 setText:[NSString stringWithFormat:@"%.3f Mbps",trialBandwidth]];
+            trial3 = trialBandwidth;
             break;
     }
+    self.bandwidthTotal += trialBandwidth;
     NSLog(@"////////trial finished/////////\n\n");
     [self.currTest setTitle:self.currTestName forState:UIControlStateNormal];
     running = false;

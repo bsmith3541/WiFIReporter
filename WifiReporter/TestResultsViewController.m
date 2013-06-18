@@ -41,13 +41,9 @@
     [wifiTest objectForKey:@"longitude"],
     [wifiTest objectForKey:@"latitude"]]);
     [self.trial1.detailTextLabel setText:[wifiTest objectForKey:@"trial1"]];
-    NSLog(@"%@", [wifiTest objectForKey:@"trial1"]);
     [self.trial2.detailTextLabel setText:[wifiTest objectForKey:@"trial2"]];
-    NSLog(@"%@", [wifiTest objectForKey:@"trial2"]);
     [self.trial3.detailTextLabel setText:[wifiTest objectForKey:@"trial3"]];
-    NSLog(@"%@", [wifiTest objectForKey:@"trial3"]);
     [self.average.detailTextLabel setText:[wifiTest objectForKey:@"average"]];
-    NSLog(@"%@", [wifiTest objectForKey:@"average"]);
     [self.testDate.detailTextLabel setText:[NSString stringWithFormat:@"%@",wifiTest.createdAt]];
 }
 
