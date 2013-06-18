@@ -48,20 +48,48 @@
                                 <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LiC-GB-hCa">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="22" id="Mhd-a9-eXX"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Advanced">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" restorationIdentifier="testAvg" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="241" translatesAutoresizingMaskIntoConstraints="NO" id="Fnu-h4-TDz">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="141" id="2KD-eh-GbM"/>
+                                    <constraint firstAttribute="width" constant="241" id="w9l-El-UvM"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="48"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="1En-ky-v9x" firstAttribute="centerX" secondItem="NPL-Xr-v58" secondAttribute="centerX" type="default" id="17c-x1-yk8"/>
+                            <constraint firstItem="1En-ky-v9x" firstAttribute="leading" secondItem="LiC-GB-hCa" secondAttribute="leading" type="default" id="2Vv-Sm-rIx"/>
                             <constraint firstAttribute="trailing" secondItem="NPL-Xr-v58" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="7Vd-FV-iiC"/>
+                            <constraint firstItem="Fnu-h4-TDz" firstAttribute="top" secondItem="NPL-Xr-v58" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="L3v-WJ-MKp"/>
                             <constraint firstItem="NPL-Xr-v58" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="NFh-w9-fUt"/>
-                            <constraint firstItem="NPL-Xr-v58" firstAttribute="top" secondItem="3" secondAttribute="top" constant="77" id="vsB-YH-Gg9"/>
+                            <constraint firstItem="LiC-GB-hCa" firstAttribute="centerY" secondItem="3" secondAttribute="centerY" type="default" id="NGt-Bg-uWe"/>
+                            <constraint firstItem="1En-ky-v9x" firstAttribute="trailing" secondItem="LiC-GB-hCa" secondAttribute="trailing" type="default" id="U3p-KL-xzO"/>
+                            <constraint firstItem="Fnu-h4-TDz" firstAttribute="centerX" secondItem="NPL-Xr-v58" secondAttribute="centerX" type="default" id="ZF9-aj-LAT"/>
+                            <constraint firstItem="NPL-Xr-v58" firstAttribute="top" secondItem="3" secondAttribute="top" constant="20" symbolic="YES" type="default" id="btG-1K-IS1"/>
+                            <constraint firstItem="Fnu-h4-TDz" firstAttribute="centerX" secondItem="LiC-GB-hCa" secondAttribute="centerX" type="default" id="coX-0x-jQ3"/>
                             <constraint firstAttribute="bottom" secondItem="1En-ky-v9x" secondAttribute="bottom" constant="85" id="zPd-iq-iK5"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Run Test" id="ABg-tx-XgI"/>
                     <connections>
+                        <outlet property="advanced" destination="LiC-GB-hCa" id="Uig-e9-XFO"/>
+                        <outlet property="avg" destination="Fnu-h4-TDz" id="azh-yn-yJE"/>
                         <outlet property="testNotice" destination="NPL-Xr-v58" id="BLS-G1-b04"/>
-                        <segue destination="4e0-uB-Ar7" kind="push" identifier="testResults" id="Xgm-pI-vWv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
@@ -73,7 +101,7 @@
             <objects>
                 <tableViewController id="4e0-uB-Ar7" customClass="TestResultsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="bAe-fL-zSx">
-                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
@@ -335,13 +363,10 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ViewController.h"/>
             <relationships>
                 <relationship kind="action" name="btnPressed:"/>
+                <relationship kind="outlet" name="advanced" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="avg" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="loc" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="network" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="testNotice" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="trial1" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="trial2" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="trial3" candidateClass="UILabel"/>
             </relationships>
         </class>
     </classes>

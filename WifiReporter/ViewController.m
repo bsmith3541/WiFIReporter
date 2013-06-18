@@ -35,10 +35,10 @@
 @end
 
 @implementation ViewController
-
-@synthesize trial1 = _trial1;
-@synthesize trial2 = _trial2;
-@synthesize trial3 = _trial3;
+//
+//@synthesize trial1 = _trial1;
+//@synthesize trial2 = _trial2;
+//@synthesize trial3 = _trial3;
 
 - (void)viewDidLoad
 {
@@ -158,15 +158,17 @@
         self.trialObj = trialObj;
     });
     
+    
     NSLog(@"the trailObj is %@", self.trialObj);
     NSLog(@"the object ID is poop: %@", self.trialObj.objectId);
-   
+    [self.avg setText:[NSString stringWithFormat:@"%.3f Mbps", average]];
+    self.advanced.hidden = NO;
 
     [self.testNotice setText:@"Tests Completed"];
     sender.enabled = YES;
     [sender setTitle:@"Run Test Again" forState: UIControlStateNormal];
     NSLog(@"/////////////Alllllllll Dooonnneeeee///////////");
-    [self performSegueWithIdentifier:@"testResults" sender:self];
+    //[self performSegueWithIdentifier:@"testResults" sender:self];
 }
 
 
@@ -285,7 +287,7 @@ char*  getMacAddress(char* macAddress, char* ifName) {
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-    if([segue.identifier isEqualToString:@"testResults"]){
+    if([segue.identifier isEqualToString:@"advanced"]){
         TestResultsViewController *controller = (TestResultsViewController *)segue.destinationViewController;
         controller.lastObj = self.trialObj;
     }

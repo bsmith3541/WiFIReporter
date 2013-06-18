@@ -21,13 +21,10 @@
     double trial3;
     double average;
 }
-@property (weak, nonatomic) IBOutlet UILabel *network;
 @property (weak, nonatomic) IBOutlet UILabel *testNotice;
-@property (weak, nonatomic) IBOutlet UILabel *trial1;
-@property (weak, nonatomic) IBOutlet UILabel *trial2;
-@property (weak, nonatomic) IBOutlet UILabel *trial3;
 @property (weak, nonatomic) IBOutlet UILabel *avg;
 @property (weak, nonatomic) IBOutlet UILabel *loc;
+@property (weak, nonatomic) IBOutlet UIButton *advanced;
 @property (strong, nonatomic) PFObject *trialObj;
 - (IBAction)btnPressed:(id)sender;
 @end
